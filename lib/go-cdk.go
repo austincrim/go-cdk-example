@@ -26,7 +26,7 @@ func NewGoCdkStack(scope constructs.Construct, id string, props *GoCdkStackProps
 
 	function := awslambda.NewFunction(stack, jsii.String("gofunction"), &awslambda.FunctionProps{
 		FunctionName: jsii.String("hellogo"),
-		Code:         awslambda.AssetCode_FromAsset(jsii.String("./handler"), nil),
+		Code:         awslambda.AssetCode_FromAsset(jsii.String("../handler"), nil),
 		Handler:      jsii.String("handler"),
 		Runtime:      awslambda.Runtime_GO_1_X(),
 	})
