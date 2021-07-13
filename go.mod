@@ -1,4 +1,4 @@
-module go-cdk
+module go-cdk-example
 
 go 1.16
 

@@ -23,7 +23,6 @@ func NewGoCdkStack(scope constructs.Construct, id string, props *GoCdkStackProps
 	stack := awscdk.NewStack(scope, &id, &sprops)
 
 	// The code that defines your stack goes here
-
 	function := awslambda.NewFunction(stack, jsii.String("gofunction"), &awslambda.FunctionProps{
 		FunctionName: jsii.String("hellogo"),
 		Code:         awslambda.AssetCode_FromAsset(jsii.String("../handler"), nil),
@@ -31,13 +30,13 @@ func NewGoCdkStack(scope constructs.Construct, id string, props *GoCdkStackProps
 		Runtime:      awslambda.Runtime_GO_1_X(),
 	})
 
+	api := awsapigatewayv2.NewHttpApi(stack, jsii.String("goapi"), &awsapigatewayv2.HttpApiProps{
+		ApiName: jsii.String("hellogoapi"),
+	})
+
 	integration := awsapigatewayv2integrations.NewLambdaProxyIntegration(&awsapigatewayv2integrations.LambdaProxyIntegrationProps{
 		Handler:              function,
 		PayloadFormatVersion: awsapigatewayv2.PayloadFormatVersion_VERSION_1_0(),
-	})
-
-	api := awsapigatewayv2.NewHttpApi(stack, jsii.String("goapi"), &awsapigatewayv2.HttpApiProps{
-		ApiName: jsii.String("hellogoapi"),
 	})
 
 	api.AddRoutes(&awsapigatewayv2.AddRoutesOptions{
