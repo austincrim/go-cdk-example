@@ -6,6 +6,7 @@ import (
 	"github.com/aws/aws-cdk-go/awscdk"
 	"github.com/aws/aws-cdk-go/awscdk/awsapigatewayv2"
 	"github.com/aws/aws-cdk-go/awscdk/awsapigatewayv2integrations"
+	"github.com/aws/aws-cdk-go/awscdk/awsdynamodb"
 	"github.com/aws/aws-cdk-go/awscdk/awslambda"
 	"github.com/aws/constructs-go/constructs/v3"
 	"github.com/aws/jsii-runtime-go"
@@ -43,6 +44,14 @@ func NewGoCdkStack(scope constructs.Construct, id string, props *GoCdkStackProps
 		Path:        jsii.String("/"),
 		Integration: integration,
 	})
+
+	requesttable := awsdynamodb.NewTable(stack, jsii.String("goexampletable"), &awsdynamodb.TableProps{
+		PartitionKey: &awsdynamodb.Attribute{Name: jsii.String("RequestId"), Type: awsdynamodb.AttributeType_STRING},
+		BillingMode:  awsdynamodb.BillingMode_PAY_PER_REQUEST,
+		TableName:    jsii.String("goexampletable"),
+	})
+
+	requesttable.GrantFullAccess(function)
 
 	return stack
 }
